@@ -1,0 +1,25 @@
+import matplotlib.pyplot as plt
+import jetFunctions as jet
+import time
+
+
+
+try:
+    jet.initStepMotorGpio()
+    jet.stepForward(300)
+    jet.initSpiAdc()
+    samples = []
+    time.sleep(2)
+    for i in range(100):
+        samples.append(jet.getAdc())
+        
+        jet.stepBackward(6)
+
+    jet.stepForward(300)
+    # plt.plot(samples)
+    # plt.show()
+finally:
+    samples_str = [str(item) for item in samples]
+    with open("data_for_70", "w") as outfile:
+        outfile.write("\n".join(samples_str))
+    jet.deinitSpiAdc()
